@@ -1,0 +1,5 @@
+streamlit
+PyMuPDF
+fuzzywuzzy
+pandas
+PyPDF2
