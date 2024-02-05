@@ -3,3 +3,4 @@ PyMuPDF
 fuzzywuzzy
 pandas
 PyPDF2
+python-Levenshtein
