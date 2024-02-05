@@ -8,9 +8,11 @@ from PyPDF2 import PdfMerger
 
 st.header('Invoice Data Analysis')
 
+@st.cache_data
 def calculate_similarity(address1, address2):
     return fuzz.ratio(address1.lower(), address2.lower())
 
+@st.cache_data
 def preprocess_text(text):
     keywords_to_exclude = ["if undelivered, return to:", "If undelivered, return to:", "If undelivered return to:", "Customer Address"]
     text = '\n'.join(line for line in text.split('\n') if all(keyword not in line for keyword in keywords_to_exclude))
@@ -18,6 +20,7 @@ def preprocess_text(text):
     cleaned_text = ' '.join(set(cleaned_text.split()))
     return cleaned_text
 
+@st.cache_data
 def prepare_df(pdf_file, crop_down=120, crop_lr=130, crop_down_inv=50, crop_lr_inv=50):
     doc = fitz.open(pdf_file)
     df = pd.DataFrame(columns=["invoice_num", "invoice_date", "customer_address", "page_num"])
@@ -64,12 +67,14 @@ def prepare_df(pdf_file, crop_down=120, crop_lr=130, crop_down_inv=50, crop_lr_i
         df = df._append(bill_instance, ignore_index=True)
     return df
 
+@st.cache_data
 def download_link(df, filename='dataframe.csv', text='Download CSV'):
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()
     href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">{text}</a>'
     return href
 
+@st.cache_data
 def find_most_similar_address(query, addresses, threshold=60):
     result = process.extractOne(query, addresses)
     if result[1] >= threshold:
@@ -77,6 +82,7 @@ def find_most_similar_address(query, addresses, threshold=60):
     else:
         return None
 
+@st.cache_data
 def merge_pdfs(uploaded_files):
     merger = PdfMerger()
     for uploaded_file in uploaded_files:
