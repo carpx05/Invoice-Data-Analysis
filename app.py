@@ -167,7 +167,6 @@ def main():
             result_df.drop_duplicates(subset=['most_similar_address'], inplace=True)
 
             st.write('Here is your DataFrame, Similar Customer Addresses')
-            result_df=session_state.result_df
             st.dataframe(result_df)
             st.write('page_numbers refer to the page  number of the invoice in the merged pdf. Download Merger PDF to view.')
             print("df 2 ready!")
