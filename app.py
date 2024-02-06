@@ -165,6 +165,7 @@ def main():
             result_df = pd.merge(address_counts, df[['most_similar_address', 'page_num']], on='most_similar_address', how='left')
             result_df['page_numbers'] = result_df.groupby('most_similar_address')['page_num'].transform(lambda x: ', '.join(map(str, x)))
             result_df.drop_duplicates(subset=['most_similar_address'], inplace=True)
+            result_df = result_df.sort_values(by='count', ascending=False)
 
             st.write('Here is your DataFrame, Similar Customer Addresses')
             st.dataframe(result_df)
